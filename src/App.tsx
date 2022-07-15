@@ -1,5 +1,6 @@
 import React from 'react';
 import {createGlobalStyle} from "styled-components";
+import TodoList from './ToDoList';
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');
@@ -68,6 +69,7 @@ function App() {
   return (
     <>
       <GlobalStyle/>
+      <TodoList/>
     </>
     
   );
