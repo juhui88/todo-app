@@ -14,7 +14,7 @@ const ToDoItem = styled.li`
 const ToDoItemBtn = styled.button`
     background: none;
     border:none;
-    color: #cbcbcb;
+    color: #7c7c7c;
     &:hover {
         transition: all ease 0.2s 0s;
         color: ${props => props.theme.accentColor};

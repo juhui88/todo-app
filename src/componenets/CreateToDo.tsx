@@ -21,6 +21,8 @@ const ToDoInput = styled.input`
     width: 90%;
     font-size: 25px;
     border-bottom: 1px solid gray;
+    background: none;
+    color: ${props => props.theme.textColor};
 `
 const ToDoBtn = styled.button`
     border: none;

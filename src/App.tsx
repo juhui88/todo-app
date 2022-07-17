@@ -1,6 +1,11 @@
 import React from 'react';
 import {createGlobalStyle} from "styled-components";
 import TodoList from './componenets/ToDoList';
+import styled,{ ThemeProvider } from 'styled-components';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { isDarkAtom } from './componenets/atom';
+import {MdDarkMode, MdOutlineDarkMode} from "react-icons/md"
+import { darkTheme, lightTheme } from './theme';
 
 const GlobalStyle = createGlobalStyle`
   html, body, div, span, applet, object, iframe,
@@ -63,12 +68,33 @@ const GlobalStyle = createGlobalStyle`
     color:${(props) => props.theme.textColor};
   }
 `;
-
+const Mode = styled.button`
+  border:none;
+  background: none;
+  position: fixed;
+  top:10px;
+  right: 10px;
+  font-size: 30px;
+  &:hover {
+    cursor:pointer;
+  }
+  color: ${props => props.theme.textColor}
+`
 function App() {
+  const isDark = useRecoilValue(isDarkAtom);
+  const setDarkAtom = useSetRecoilState(isDarkAtom);
+  const toggleDarkAtom = () => setDarkAtom(prev => !prev)
+
   return (
     <>
-      <GlobalStyle/>
-      <TodoList/>
+      <ThemeProvider theme = {isDark ? darkTheme : lightTheme}>
+          <Mode onClick = {toggleDarkAtom}>
+            {isDark ? <MdDarkMode/> : <MdOutlineDarkMode/>}
+          </Mode>
+          <GlobalStyle/>
+          <TodoList/>
+      </ThemeProvider>
+      
     </>
     
   );
