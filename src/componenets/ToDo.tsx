@@ -1,7 +1,31 @@
 import React from "react";
 import { useSetRecoilState } from "recoil";
 import { Categories, IToDo, toDoState } from "./atom";
-import { BsCheckLg, BsFillArrowLeftSquareFill } from "react-icons/bs";
+import { BsCheckLg} from "react-icons/bs";
+import {FaArrowLeft} from"react-icons/fa";
+import {MdDeleteOutline} from "react-icons/md"
+import styled from "styled-components";
+
+const ToDoItem = styled.li`
+    margin: 10px 0 10px 0;
+    display: grid;
+    grid-template-columns: 1fr 6fr 1fr;
+`
+const ToDoItemBtn = styled.button`
+    background: none;
+    border:none;
+    color: #cbcbcb;
+    &:hover {
+        transition: all ease 0.2s 0s;
+        color: ${props => props.theme.accentColor};
+        cursor: pointer;
+    }
+`
+const ToDoItemDelBtn = styled(ToDoItemBtn)`
+    &:hover {
+        color: ${props => props.theme.textColor};
+    }
+`
 
 function ToDo({text, id, category}:IToDo) {
     const setToDos = useSetRecoilState(toDoState);
@@ -20,13 +44,13 @@ function ToDo({text, id, category}:IToDo) {
         }))
     }
     return (
-        <li>
+        <ToDoItem>
             {category === "TO_DO" ? 
-                <button name = {Categories.DONE} onClick = {onChangeCategory}><BsCheckLg/></button> : 
-                <button name = {Categories.TO_DO} onClick = {onChangeCategory}><BsFillArrowLeftSquareFill/></button>}
+                <ToDoItemBtn name = {Categories.DONE} onClick = {onChangeCategory}><BsCheckLg/></ToDoItemBtn> : 
+                <ToDoItemBtn name = {Categories.TO_DO} onClick = {onChangeCategory}><FaArrowLeft/></ToDoItemBtn>}
             <span>{text}</span>
-            <button onClick={onDelete}>❌</button>
-        </li>
+            <ToDoItemDelBtn onClick={onDelete}><MdDeleteOutline/></ToDoItemDelBtn>
+        </ToDoItem>
     )
 }
 
