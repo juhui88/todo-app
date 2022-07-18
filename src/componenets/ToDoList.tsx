@@ -1,92 +1,33 @@
-import React, { useState } from "react";
-import {useForm} from 'react-hook-form';
-import { useRecoilValue } from "recoil";
-import styled from "styled-components";
-import { toDoState } from "./atom";
+import React from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { categoriesState, categoryState, toDoSelector, toDoState} from './atom';
+import CreateCategory from "./CreateCategory";
 import CreateToDo from "./CreateToDo";
 import ToDo from "./ToDo";
-import { Categories } from "./atom";
-
-const Container = styled.div`
-    margin : 40px auto;
-    width: 60vw;
-    height: 70vh;
-    background: ${props => props.theme.itemBgColor};
-    border-radius: 15px;
-    padding: 50px;
-`
-const Title = styled.div`
-    font-size: 30px;
-    margin-bottom: 30px;
-`
-const DateYMD = styled.p`
-    margin: 10px 0 10px 0;
-    font-weight: bold;
-`
-const DateDay = styled(DateYMD)`
-    font-size: 20px;
-    color: gray;
-`
-const ToDoListWrap = styled.div`
-    display:flex;
-
-`
-const ToDoItemWrap = styled.div`
-    width: 100%;
-    font-weight: bold;
-    margin: 0 7px;
-    height: 45vh;
-    
-`
-const ToDoItemTitle = styled.div`
-    margin: 7px 0 10px 0;
-`
-
-const day = ["일", "월", "화", "수", "목", "금", "토"];
 
 function TodoList() {
-    const toDos= useRecoilValue(toDoState);
-    const date = new Date();
-    console.log(toDos)
+    const [category, setCategory] = useRecoilState(categoryState);
+    const categories = useRecoilValue(categoriesState);
+    const toDos = useRecoilValue(toDoSelector);
+
+    const onInput = (e:React.FormEvent<HTMLSelectElement>) => {
+        const {currentTarget: {value}} = e
+        setCategory(value as any)
+    }
     return (
-        <Container>
-            <Title>
-                <DateYMD>
-                    {date.getFullYear()}년 {date.getMonth() + 1}월 {date.getDate()}일
-                </DateYMD>
-                <DateDay>
-                    {day[date.getDay()]}요일
-                </DateDay>
-            </Title>
+        <div>
+            <h1>To Dos</h1>
+            <hr/>
+            <CreateCategory/>
+            <hr/>
+            <form>
+                <select value = {category} onInput={onInput}>
+                    {categories.map(c => <option value = {c.category}>{c.category}</option>)}
+                </select>
+            </form>
             <CreateToDo/>
-            <ToDoListWrap>
-                <ToDoItemWrap>
-                    <ToDoItemTitle>To Do</ToDoItemTitle>
-                    <ul>
-                        {toDos.map(toDo => {
-                            if (toDo.category === Categories.TO_DO) {
-                                return <ToDo key = {toDo.id} {...toDo}/>
-                            }
-                        })}
-                            
-                    </ul>
-                </ToDoItemWrap>
-                <hr/>
-                <ToDoItemWrap>
-                    <ToDoItemTitle>Done</ToDoItemTitle>
-                    {toDos.map(toDo => {
-                            if (toDo.category === Categories.DONE) {
-                                return <ToDo key = {toDo.id} {...toDo}/>
-                            }
-                        })}
-                </ToDoItemWrap>
-            </ToDoListWrap>
-            
-            <div>
-                
-                
-            </div>
-        </Container>
+            {toDos?.map(toDo => <ToDo key = {toDo.id} {...toDo}/> )}
+        </div>
     )
 }
 

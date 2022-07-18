@@ -1,13 +1,9 @@
 import React from 'react';
 import {createGlobalStyle} from "styled-components";
 import TodoList from './componenets/ToDoList';
-import styled,{ ThemeProvider } from 'styled-components';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { isDarkAtom } from './componenets/atom';
-import {MdDarkMode, MdOutlineDarkMode} from "react-icons/md"
-import { darkTheme, lightTheme } from './theme';
 
 const GlobalStyle = createGlobalStyle`
+  @import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
   a, abbr, acronym, address, big, cite, code,
@@ -61,40 +57,19 @@ const GlobalStyle = createGlobalStyle`
   body {
     background-color:${(props) => props.theme.bgColor};
     color:${(props) => props.theme.textColor};
-    font-family: 'Nanum Gothic', sans-serif;
+    font-family:'Do Hyeon', sans-serif;
   }
   a {
     text-decoration:none;
     color:${(props) => props.theme.textColor};
   }
 `;
-const Mode = styled.button`
-  border:none;
-  background: none;
-  position: fixed;
-  top:10px;
-  right: 10px;
-  font-size: 30px;
-  &:hover {
-    cursor:pointer;
-  }
-  color: ${props => props.theme.textColor}
-`
-function App() {
-  const isDark = useRecoilValue(isDarkAtom);
-  const setDarkAtom = useSetRecoilState(isDarkAtom);
-  const toggleDarkAtom = () => setDarkAtom(prev => !prev)
 
+function App() {
   return (
     <>
-      <ThemeProvider theme = {isDark ? darkTheme : lightTheme}>
-          <Mode onClick = {toggleDarkAtom}>
-            {isDark ? <MdDarkMode/> : <MdOutlineDarkMode/>}
-          </Mode>
-          <GlobalStyle/>
-          <TodoList/>
-      </ThemeProvider>
-      
+      <GlobalStyle/>
+      <TodoList/>
     </>
     
   );
